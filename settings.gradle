@@ -1,0 +1,1 @@
+include ':app', ':testweibosdk1', ':download', ':xwalk2'

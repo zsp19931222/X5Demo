@@ -1,0 +1,152 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '26.0.2'
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+    defaultConfig {
+        applicationId "com.example.administrator.x5demo"
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 301
+        versionName "公测版 3.0.1"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        flavorDimensions "versionCode"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        arm {
+            ndk {
+                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            }
+        }
+        x86 {
+            ndk {
+                abiFilters 'x86', 'x86_64'
+            }
+        }
+    }
+
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+    dexOptions {
+        javaMaxHeapSize "6g"
+    }
+
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+}
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '27.1.0'
+            }
+        }
+    }
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    google()
+}
+dependencies {
+    provided fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile project(':download')
+
+
+    compile 'com.android.support:multidex:1.0.3'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:recyclerview-v7:27.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.jakewharton:butterknife:8.7.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.bm.photoview:library:1.4.1'
+    compile 'com.lzy.net:okgo:3.0.4'
+    compile 'com.lzy.net:okserver:2.0.2'
+
+    implementation files('libs/bcprov-jdk16-1.46.jar')
+    implementation files('libs/jcore-android-1.1.8.jar')
+    implementation files('libs/jpush-android-3.1.0.jar')
+    implementation files('libs/pdr.jar')
+    implementation files('libs/ui.jar')
+    implementation files('libs/my-nineoldandroids-2.4.0.jar')
+    implementation files('libs/my-imageloader.jar')
+    implementation files('libs/barcode.jar')
+    implementation files('libs/nativeui.jar')
+    implementation files('libs/gallery.jar')
+    implementation files('libs/camera.jar')
+    implementation files('libs/mysonic.jar')
+    implementation files('libs/downloader.jar')
+    implementation files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/alipaySingle-20170510.jar')
+    compile files('libs/BaiduNaviSDK_3.3.1.jar')
+    compile files('libs/ewm_core.jar')
+    compile files('libs/fastjson-1.2.5.jar')
+    compile files('libs/gson-2.3.1.jar')
+    compile files('libs/jackson-all-2.8.0.jar')
+    compile files('libs/libammsdk.jar')
+    compile files('libs/rebound-0.3.7.jar')
+    compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
+    compile files('libs/UPPayAssistEx.jar')
+    compile files('libs/UPPayPluginExPro.jar')
+    compile files('libs/volly-1.0.11.jar')
+    compile files('libs/glide-3.6.1.jar')
+    compile files('libs/pinyin4j-2.5.0.jar')
+    compile files('libs/httpcore-4.3.2.jar')
+    compile files('libs/httpclient-4.3.5.jar')
+    compile files('libs/httpmime-4.3.5.jar')
+}
